@@ -7,6 +7,33 @@ EvilDog.scale = C.EVIL_CLOSE_SCALE
 
 local speed = C.EVIL_CLOSE_SPEED
 
+--Spawn generator
+local function spawn()
+    local where = love.math.random(0, 2)
+
+    if(where == 1) then --Spawn left side
+        EvilDog.x = - 50
+        EvilDog.y = love.math.random(0, C.WINDOW_HEIGHT)
+    elseif(where == 2) then --Spawn right side
+        EvilDog.x = C.WINDOW_WIDTH + 50
+        EvilDog.y = love.math.random(0, C.WINDOW_HEIGHT)    
+    elseif(where == 3) then --Spawn up
+        EvilDog.x = love.math.random(0, C.WINDOW_WIDTH)
+        EvilDog.y = -50
+    else --Spawn down
+        EvilDog.x = love.math.random(0, C.WINDOW_WIDTH)
+        EvilDog.y = C.WINDOW_HEIGHT + 50
+    end
+
+    function EvilDog:draw()
+    love.graphics.draw(EvilDog.img, EvilDog.x, EvilDog.y, 0, EvilDog.scale)
+    --love.graphics.print(where, 100, 0, 0, 1)
+end
+
+end
+
+
+
 function EvilDog:update(dt)
 
     --Positions
@@ -30,10 +57,8 @@ function EvilDog:update(dt)
     EvilDog.x = EvilDog.x + dirX * speed * dt
     EvilDog.y = EvilDog.y + dirY * speed * dt
 
-end
+    spawn()
 
-function EvilDog:draw()
-    love.graphics.draw(EvilDog.img, EvilDog.x, EvilDog.y, 0, EvilDog.scale)
 end
 
 return EvilDog
