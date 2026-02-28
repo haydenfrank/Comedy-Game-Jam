@@ -1,13 +1,5 @@
 local C = require("src/constants")
 
--- Configuration
-local FRAME_SCALE = 4 -- draw the pop-up frame 4x its image size
-local SPAWN_MIN = 1.0 -- seconds (min) between spawns
-local SPAWN_MAX = 4.0 -- seconds (max) between spawns
-local POPUP_TTL_MIN = 6.0 -- seconds a popup stays on screen
-local POPUP_TTL_MAX = 12.0
-local MAX_POPUPS = 8
-
 local windows = { instances = {} }
 
 local frame = love.graphics.newImage("assets/pop-up-window.png")
@@ -23,7 +15,7 @@ end
 
 -- spawn a new popup instance
 local function spawnPopup()
-	if #windows.instances >= MAX_POPUPS or #videoFiles == 0 then
+	if #windows.instances >= C.MAX_POPUPS or #videoFiles == 0 then
 		return
 	end
 
@@ -36,15 +28,12 @@ local function spawnPopup()
 		return
 	end
 	local vid = vid_or_err
-	if vid.setLooping then
-		vid:setLooping(true)
-	end
 	if vid.play then
 		vid:play()
 	end
 
 	local baseW, baseH = frame:getWidth(), frame:getHeight()
-	local fw, fh = baseW * FRAME_SCALE, baseH * FRAME_SCALE
+	local fw, fh = baseW, baseH
 
 	-- choose a position so the full scaled frame is on-screen
 	local x = math.random(math.floor(fw / 2), math.max(math.floor(C.WINDOW_WIDTH - fw / 2), 1))
@@ -71,23 +60,23 @@ local function spawnPopup()
 		vidW, vidH = baseW, baseH
 	end
 
-	-- compute scale so video fills the scaled frame (preserve aspect by fitting)
-	local scale = math.min(fw / vidW, fh / vidH)
-	local scaleX, scaleY = scale, scale
+	-- compute scale so video becomes exactly VIDEO_W x VIDEO_H (may stretch)
+	local scaleX, scaleY = C.VIDEO_W / vidW, C.VIDEO_H / vidH
 
 	local instance = {
 		video = vid,
 		body = body,
 		shape = shape,
 		fixture = fixture,
-		ttl = math.random() * (POPUP_TTL_MAX - POPUP_TTL_MIN) + POPUP_TTL_MIN,
+		ttl = math.random() * (C.POPUP_TTL_MAX - C.POPUP_TTL_MIN) + C.POPUP_TTL_MIN,
 		baseW = baseW,
 		baseH = baseH,
-		frameScale = FRAME_SCALE,
 		vidW = vidW,
 		vidH = vidH,
 		scaleX = scaleX,
 		scaleY = scaleY,
+		drawW = C.VIDEO_W,
+		drawH = C.VIDEO_H,
 	}
 
 	table.insert(windows.instances, instance)
@@ -95,7 +84,7 @@ end
 
 -- spawn timer
 local spawnTimer = 0
-local nextSpawn = math.random() * (SPAWN_MAX - SPAWN_MIN) + SPAWN_MIN
+local nextSpawn = math.random() * (C.SPAWN_MAX - C.SPAWN_MIN) + C.SPAWN_MIN
 
 function windows.update(dt)
 	-- tolerate being called with unexpected argument types (some callers pass tables)
@@ -132,24 +121,26 @@ function windows.update(dt)
 	if spawnTimer >= nextSpawn then
 		spawnPopup()
 		spawnTimer = 0
-		nextSpawn = math.random() * (SPAWN_MAX - SPAWN_MIN) + SPAWN_MIN
+		nextSpawn = math.random() * (C.SPAWN_MAX - C.SPAWN_MIN) + C.SPAWN_MIN
 	end
 end
 
 function windows.draw()
 	for _, v in ipairs(windows.instances) do
 		local x, y = v.body:getPosition()
-		local fw, fh = v.baseW * v.frameScale, v.baseH * v.frameScale
-
-		love.graphics.draw(frame, x - fw / 2, y - fh / 2, 0, v.frameScale, v.frameScale)
-		-- draw video scaled to fit inside the scaled frame, centered
-		if v.video then
-			local drawW = v.vidW * v.scaleX
-			local drawH = v.vidH * v.scaleY
-			love.graphics.draw(v.video, x - drawW / 2, y - drawH / 2, 0, v.scaleX, v.scaleY)
-		end
+		local fw, fh = v.baseW, v.baseH
 
 		-- draw the pop-up frame on top (scaled)
+		love.graphics.draw(frame, x - fw / 2, y - fh / 2, 0)
+		-- draw video scaled to the exact target size, offset 9px from top (original image space)
+		if v.video then
+			local drawW = v.drawW or (v.vidW * v.scaleX)
+			local drawH = v.drawH or (v.vidH * v.scaleY)
+			local topOffset = C.TOPOFFSET
+			local videoX = x - drawW / 2 -- centered horizontally
+			local videoY = (y - fh / 2) + topOffset -- 9px (scaled) from top of frame
+			love.graphics.draw(v.video, videoX, videoY, 0, v.scaleX, v.scaleY)
+		end
 	end
 end
 
