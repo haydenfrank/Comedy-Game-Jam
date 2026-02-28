@@ -5,6 +5,7 @@ function love.load()
 	ButterNova = require("src/butternova")
 	MapBorder = require("src/mapborder")
 	Timer = require("src/timer")
+	EvilDog = require("src/evilButterDogSlow")
 end
 
 function love.keypressed() end
@@ -13,6 +14,7 @@ function love.update(dt)
 	World:update(dt)
 	Timer:update(dt)
     ButterDog:update(dt)
+	EvilDog:update(dt)
 end
 function love.draw()
 	love.graphics.draw(
@@ -25,5 +27,8 @@ function love.draw()
 		ButterDog.img:getWidth() / 2,
 		ButterDog.img:getHeight() / 2
 	)
+
+	EvilDog:draw()
+
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 end
