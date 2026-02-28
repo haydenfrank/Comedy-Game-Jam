@@ -1,30 +1,29 @@
 function love.load()
-	ButterDog = {}
-	ButterDog.img = love.graphics.newImage("assets/butterdog.png")
-	ButterDog.x = 0
-	ButterDog.y = 0
-	ButterNova = love.audio.newSource("assets/butternova.ogg", "static")
-	ButterNova:setLooping(true)
-	ButterNova:play()
-	ButterNova:setVolume(0.25)
+	local C = require("src/constants")
+	World = love.physics.newWorld(0, 0, true)
+	ButterDog = require("src/butterdog")
+	ButterNova = require("src/butternova")
+	MapBorder = require("src/mapborder")
+	Timer = require("src/timer")
 end
 
 function love.keypressed() end
 
 function love.update(dt)
-	if love.keyboard.isDown("d") then
-		ButterDog.x = ButterDog.x + 150 * dt
-	end
-	if love.keyboard.isDown("a") then
-		ButterDog.x = ButterDog.x - 150 * dt
-	end
-	if love.keyboard.isDown("w") then
-		ButterDog.y = ButterDog.y - 150 * dt
-	end
-	if love.keyboard.isDown("s") then
-		ButterDog.y = ButterDog.y + 150 * dt
-	end
+	World:update(dt)
+	Timer:update(dt)
+    ButterDog:update(dt)
 end
 function love.draw()
-	love.graphics.draw(ButterDog.img, ButterDog.x, ButterDog.y)
+	love.graphics.draw(
+		ButterDog.img,
+		ButterDog.body:getX(),
+		ButterDog.body:getY(),
+		ButterDog.body:getAngle(),
+		ButterDog.scale,
+		ButterDog.scale,
+		ButterDog.img:getWidth() / 2,
+		ButterDog.img:getHeight() / 2
+	)
+	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 end

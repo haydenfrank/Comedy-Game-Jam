@@ -1,0 +1,9 @@
+local C = {
+	DOG_SCALE = 0.25,
+	DOG_SPEED = 250,
+	WINDOW_WIDTH = 1600,
+	WINDOW_HEIGHT = 900,
+	VOLUME = 0.25,
+}
+
+return C
