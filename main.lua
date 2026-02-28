@@ -10,6 +10,13 @@ end
 
 function love.keypressed() end
 
+function love.mousepressed(x, y, button)
+    -- forward mouse clicks to the Videos module so popups can be closed
+    if Videos and Videos.mousepressed then
+        Videos.mousepressed(x, y, button)
+    end
+end
+
 function love.update(dt)
     World:update(dt)
     Timer:update(dt)
