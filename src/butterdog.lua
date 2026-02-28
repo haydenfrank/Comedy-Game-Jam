@@ -6,8 +6,8 @@ ButterDog.img = love.graphics.newImage("assets/butterdog.png")
 ButterDog.scale = C.DOG_SCALE
 ButterDog.body = love.physics.newBody(World, 0, 0, "dynamic")
 ButterDog.shape = love.physics.newRectangleShape(
-	ButterDog.img:getWidth() * ButterDog.scale,
-	ButterDog.img:getHeight() * ButterDog.scale
+	(ButterDog.img:getWidth() - 7) * ButterDog.scale,
+	(ButterDog.img:getHeight() - 33) * ButterDog.scale
 )
 ButterDog.fixture = love.physics.newFixture(ButterDog.body, ButterDog.shape)
 ButterDog.speed = C.DOG_SPEED

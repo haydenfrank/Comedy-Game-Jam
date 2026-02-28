@@ -1,6 +1,7 @@
 function love.load()
 	local C = require("src/constants")
 	World = love.physics.newWorld(0, 0, true)
+	BGImage = love.graphics.newImage("assets/background.png")
 	ButterDog = require("src/butterdog")
 	ButterNova = require("src/butternova")
 	MapBorder = require("src/mapborder")
@@ -26,6 +27,7 @@ function love.update(dt)
     Videos.update(dt)
 end
 function love.draw()
+	love.graphics.draw(BGImage)
 	love.graphics.draw(
 		ButterDog.img,
 		ButterDog.body:getX(),
