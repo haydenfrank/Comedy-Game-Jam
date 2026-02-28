@@ -39,18 +39,10 @@ local function spawnPopup()
 	local x = math.random(math.floor(fw / 2), math.max(math.floor(C.WINDOW_WIDTH - fw / 2), 1))
 	local y = math.random(math.floor(fh / 2), math.max(math.floor(C.WINDOW_HEIGHT - fh / 2), 1))
 
-	-- create physics body safely
-	local ok2, body_or_err = pcall(love.physics.newBody, World, x, y, "static")
-	if not ok2 then
-		print("@LOG videos: failed to create physics body:", body_or_err)
-		if vid and vid.pause then
-			vid:pause()
-		end
-		return
-	end
-	local body = body_or_err
-	local shape = love.physics.newRectangleShape(fw, fh)
-	local fixture = love.physics.newFixture(body, shape)
+    -- position for the popup (no physics) — just overlay on screen
+    local body = nil
+    local shape = nil
+    local fixture = nil
 
 	-- determine video size (if supported)
 	local vidW, vidH
@@ -63,21 +55,21 @@ local function spawnPopup()
 	-- compute scale so video becomes exactly VIDEO_W x VIDEO_H (may stretch)
 	local scaleX, scaleY = C.VIDEO_W / vidW, C.VIDEO_H / vidH
 
-	local instance = {
-		video = vid,
-		body = body,
-		shape = shape,
-		fixture = fixture,
-		ttl = math.random() * (C.POPUP_TTL_MAX - C.POPUP_TTL_MIN) + C.POPUP_TTL_MIN,
-		baseW = baseW,
-		baseH = baseH,
-		vidW = vidW,
-		vidH = vidH,
-		scaleX = scaleX,
-		scaleY = scaleY,
-		drawW = C.VIDEO_W,
-		drawH = C.VIDEO_H,
-	}
+    local instance = {
+        video = vid,
+        -- store explicit coordinates instead of a physics body
+        x = x,
+        y = y,
+        ttl = math.random() * (C.POPUP_TTL_MAX - C.POPUP_TTL_MIN) + C.POPUP_TTL_MIN,
+        baseW = baseW,
+        baseH = baseH,
+        vidW = vidW,
+        vidH = vidH,
+        scaleX = scaleX,
+        scaleY = scaleY,
+        drawW = C.VIDEO_W,
+        drawH = C.VIDEO_H,
+    }
 
 	table.insert(windows.instances, instance)
 end
@@ -127,7 +119,12 @@ end
 
 function windows.draw()
 	for _, v in ipairs(windows.instances) do
-		local x, y = v.body:getPosition()
+		local x, y
+		if v.body and v.body.getPosition then
+			x, y = v.body:getPosition()
+		else
+			x, y = v.x, v.y
+		end
 		local fw, fh = v.baseW, v.baseH
 
 		-- draw the pop-up frame on top (scaled)

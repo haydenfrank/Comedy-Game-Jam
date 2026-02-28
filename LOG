@@ -1,12 +1,12 @@
 Error
 
-src/videos.lua:93: attempt to perform arithmetic on local 'dt' (a table value)
+src/videos.lua:122: attempt to index field 'body' (a nil value)
 
 
 Traceback
 
 [love "callbacks.lua"]:228: in function 'handler'
-src/videos.lua:93: in function 'update'
-main.lua:17: in function 'update'
-[love "callbacks.lua"]:162: in function <[love "callbacks.lua"]:144>
+src/videos.lua:122: in function 'draw'
+main.lua:30: in function 'draw'
+[love "callbacks.lua"]:168: in function <[love "callbacks.lua"]:144>
 [C]: in function 'xpcall'
