@@ -12,27 +12,7 @@ function love.keypressed() end
 function love.update(dt)
 	World:update(dt)
 	Timer:update(dt)
-	local vx, vy = 0, 0
-	if love.keyboard.isDown("d") then
-		vx = vx + 1
-	end
-	if love.keyboard.isDown("a") then
-		vx = vx - 1
-	end
-	if love.keyboard.isDown("s") then
-		vy = vy + 1
-	end
-	if love.keyboard.isDown("w") then
-		vy = vy - 1
-	end
-	if vx == 0 and vy == 0 then
-		ButterDog.body:setLinearVelocity(0, 0)
-	else
-		local len = math.sqrt(vx * vx + vy * vy)
-		vx = vx / len * ButterDog.speed
-		vy = vy / len * ButterDog.speed
-		ButterDog.body:setLinearVelocity(vx, vy)
-	end
+    ButterDog:update(dt)
 end
 function love.draw()
 	love.graphics.draw(
