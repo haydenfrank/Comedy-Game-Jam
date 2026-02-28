@@ -1,6 +1,6 @@
 local C = require("src/constants")
 
-ButterDog = {}
+ButterDog = {health = 3}
 ButterDog.img = love.graphics.newImage("assets/butterdog.png")
 -- scale the sprite and physics shape to 1/4 size
 ButterDog.scale = C.DOG_SCALE
@@ -36,6 +36,8 @@ function ButterDog:update(dt)
 		vy = vy / len * self.speed
 		self.body:setLinearVelocity(vx, vy)
 	end
+	
 end
+
 
 return ButterDog
