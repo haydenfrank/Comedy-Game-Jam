@@ -28,7 +28,7 @@ function love.draw()
 		ButterDog.img:getHeight() / 2
 	)
 
-	EvilDog:draw()
+	EvilDogs.draw()
 
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 end

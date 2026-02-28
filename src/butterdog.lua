@@ -39,4 +39,5 @@ function ButterDog:update(dt)
 	
 end
 
+
 return ButterDog
