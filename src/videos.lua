@@ -3,6 +3,12 @@ local C = require("src/constants")
 local windows = { instances = {} }
 
 local frame = love.graphics.newImage("assets/pop-up-window.png")
+-- optional pressed-state image for the close button
+local pressedFrame
+local ok_img, pf = pcall(love.graphics.newImage, "assets/pop-up-window-pressed.png")
+if ok_img then
+    pressedFrame = pf
+end
 
 -- collect available video file paths
 local videoFiles = {}
@@ -125,10 +131,19 @@ function windows.draw()
 		else
 			x, y = v.x, v.y
 		end
-		local fw, fh = v.baseW, v.baseH
+        local fw, fh = v.baseW, v.baseH
 
-		-- draw the pop-up frame on top (scaled)
-		love.graphics.draw(frame, x - fw / 2, y - fh / 2, 0)
+        -- detect hover over the close 'X' area (approximate position)
+        local mx, my = love.mouse.getPosition()
+        local closeW, closeH = 32, 32
+        local padding = 12
+        local closeX = (x + fw / 2) - padding - closeW
+        local closeY = (y - fh / 2) + padding
+        local hoveringClose = (mx >= closeX and mx <= closeX + closeW and my >= closeY and my <= closeY + closeH)
+
+        -- draw the pop-up frame on top (switch image when hovering close)
+        local frameImg = (hoveringClose and pressedFrame) and pressedFrame or frame
+        love.graphics.draw(frameImg, x - fw / 2, y - fh / 2, 0)
 		-- draw video scaled to the exact target size, offset 9px from top (original image space)
 		if v.video then
 			local drawW = v.drawW or (v.vidW * v.scaleX)
