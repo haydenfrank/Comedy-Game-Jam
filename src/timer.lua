@@ -1,7 +1,15 @@
-local time = 0
+local Timer = { time = 0 }
 
-function love.update(dt)
-	time = time + dt
+function Timer:update(dt)
+    self.time = self.time + dt
 end
 
-return time
+function Timer:reset()
+    self.time = 0
+end
+
+function Timer:get()
+    return self.time
+end
+
+return Timer

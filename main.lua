@@ -4,13 +4,14 @@ function love.load()
 	ButterDog = require("src/butterdog")
 	ButterNova = require("src/butternova")
 	MapBorder = require("src/mapborder")
-	Time = require("src/timer")
+	Timer = require("src/timer")
 end
 
 function love.keypressed() end
 
 function love.update(dt)
 	World:update(dt)
+	Timer:update(dt)
 	local vx, vy = 0, 0
 	if love.keyboard.isDown("d") then
 		vx = vx + 1
@@ -44,5 +45,5 @@ function love.draw()
 		ButterDog.img:getWidth() / 2,
 		ButterDog.img:getHeight() / 2
 	)
-	love.graphics.print("Time: " .. math.floor(Time) .. "s", 10, 10)
+	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 end
