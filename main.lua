@@ -1,30 +1,48 @@
 function love.load()
-	ButterDog = {}
-	ButterDog.img = love.graphics.newImage("assets/butterdog.png")
-	ButterDog.x = 0
-	ButterDog.y = 0
-	ButterNova = love.audio.newSource("assets/butternova.ogg", "static")
-	ButterNova:setLooping(true)
-	ButterNova:play()
-	ButterNova:setVolume(0.25)
+	local C = require("src/constants")
+	World = love.physics.newWorld(0, 0, true)
+	ButterDog = require("src/butterdog")
+	ButterNova = require("src/butternova")
+	MapBorder = require("src/mapborder")
+	Time = require("src/timer")
 end
 
 function love.keypressed() end
 
 function love.update(dt)
+	World:update(dt)
+	local vx, vy = 0, 0
 	if love.keyboard.isDown("d") then
-		ButterDog.x = ButterDog.x + 150 * dt
+		vx = vx + 1
 	end
 	if love.keyboard.isDown("a") then
-		ButterDog.x = ButterDog.x - 150 * dt
-	end
-	if love.keyboard.isDown("w") then
-		ButterDog.y = ButterDog.y - 150 * dt
+		vx = vx - 1
 	end
 	if love.keyboard.isDown("s") then
-		ButterDog.y = ButterDog.y + 150 * dt
+		vy = vy + 1
+	end
+	if love.keyboard.isDown("w") then
+		vy = vy - 1
+	end
+	if vx == 0 and vy == 0 then
+		ButterDog.body:setLinearVelocity(0, 0)
+	else
+		local len = math.sqrt(vx * vx + vy * vy)
+		vx = vx / len * ButterDog.speed
+		vy = vy / len * ButterDog.speed
+		ButterDog.body:setLinearVelocity(vx, vy)
 	end
 end
 function love.draw()
-	love.graphics.draw(ButterDog.img, ButterDog.x, ButterDog.y)
+	love.graphics.draw(
+		ButterDog.img,
+		ButterDog.body:getX(),
+		ButterDog.body:getY(),
+		ButterDog.body:getAngle(),
+		ButterDog.scale,
+		ButterDog.scale,
+		ButterDog.img:getWidth() / 2,
+		ButterDog.img:getHeight() / 2
+	)
+	love.graphics.print("Time: " .. math.floor(Time) .. "s", 10, 10)
 end
