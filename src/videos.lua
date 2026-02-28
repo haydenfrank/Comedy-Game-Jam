@@ -133,17 +133,20 @@ function windows.draw()
 		end
         local fw, fh = v.baseW, v.baseH
 
-        -- detect hover over the close 'X' area (approximate position)
+        -- calculate top-left of the frame image (we draw the frame centered at x,y)
+        local imgX, imgY = x - fw / 2, y - fh / 2
+
+        -- detect hover over the close 'X' area using exact image pixel offsets
+        -- button bounds (relative to top-left of the image):
+        -- top-left:  (320, 8), bottom-right: (376, 64) -> width = 56, height = 56
         local mx, my = love.mouse.getPosition()
-        local closeW, closeH = 32, 32
-        local padding = 12
-        local closeX = (x + fw / 2) - padding - closeW
-        local closeY = (y - fh / 2) + padding
+        local closeX, closeY = imgX + 320, imgY + 8
+        local closeW, closeH = 376 - 320, 64 - 8 -- 56x56
         local hoveringClose = (mx >= closeX and mx <= closeX + closeW and my >= closeY and my <= closeY + closeH)
 
         -- draw the pop-up frame on top (switch image when hovering close)
         local frameImg = (hoveringClose and pressedFrame) and pressedFrame or frame
-        love.graphics.draw(frameImg, x - fw / 2, y - fh / 2, 0)
+        love.graphics.draw(frameImg, imgX, imgY, 0)
 		-- draw video scaled to the exact target size, offset 9px from top (original image space)
 		if v.video then
 			local drawW = v.drawW or (v.vidW * v.scaleX)
