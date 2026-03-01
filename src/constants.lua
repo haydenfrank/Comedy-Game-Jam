@@ -24,9 +24,9 @@ local C = {
 	GAME_TIME_LENGTH = 222,
 	GAME_TIME_BOSS_START = 150.720,
 	DOG_SPAWN_RATE = 1.0,
-	VIDEO_SPAWN_RATE = 1.0,
+	VIDEO_SPAWN_RATE = 0.0,
 	-- LOADING_TIME = 0.05, -- for debug
-	-- UNKILLABLE = true, -- for debug
+	UNKILLABLE = true, -- for debug
 }
 
 return C
