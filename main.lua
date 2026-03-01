@@ -27,7 +27,7 @@ function love.load()
 end
 
 function love.keypressed(key)
-	if key == "r" and lost == true or won == true then
+	if key == "r" and lost == true then
 		love.event.push("quit", "restart")
 	end
 
@@ -40,9 +40,9 @@ function love.keypressed(key)
 			sound:play()
 		end
 	end
-	if key == "k" and loaded then -- for debug, skip to boss fight
-		Timer:set(C.GAME_TIME_BOSS_START)
-	end
+	-- if key == "k" and loaded then -- for debug, skip to boss fight
+	-- 	Timer:set(C.GAME_TIME_BOSS_START)
+	-- end
 end
 
 function love.mousepressed(x, y, button)
@@ -65,7 +65,8 @@ local startFlashCount = false
 local startNoFlashCount = false
 
 function love.update(dt)
-	if Timer.time >= C.GAME_TIME_LENGTH then
+
+	if(Timer.time >= C.GAME_TIME_LENGTH) then
 		won = true
 	end
 
