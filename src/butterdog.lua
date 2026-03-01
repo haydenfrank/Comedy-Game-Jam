@@ -41,13 +41,15 @@ function ButterDog:update(dt)
 end
 
 function ButterDog:shootAt(mx, my)
-  local px, py = self.body:getX(), self.body:getY()
-  local dx, dy = mx - px, my - py
-  local len = math.sqrt(dx * dx + dy * dy)
-  if len == 0 then return end
-  dx = dx / len
-  dy = dy / len
-  Bullets.spawn(px, py, dx, dy)
+	local px, py = self.body:getX(), self.body:getY()
+	local dx, dy = mx - px, my - py
+	local len = math.sqrt(dx * dx + dy * dy)
+	if len == 0 then
+		return
+	end
+	dx = dx / len
+	dy = dy / len
+	Bullets.spawn(px, py, dx, dy, true)
 end
 
 return ButterDog
