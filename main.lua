@@ -1,8 +1,9 @@
 local C = require("src/constants")
 local loaded = false
-local lost = false
+
 
 function love.load()
+	lost = false
 	World = love.physics.newWorld(0, 0, true)
 	BGImage = love.graphics.newImage("assets/background.png")
 	ButterDog = require("src/butterdog")
@@ -19,13 +20,6 @@ function love.load()
 end
 
 function love.keypressed(key)
-	if key == "k" then
-		if ButterDog.health == 1 then
-			lost = true
-		else
-			ButterDog.health = ButterDog.health - 1
-		end
-	end
 	if key == "r" and lost == true then
 		love.event.push("quit", "restart")
 	end
