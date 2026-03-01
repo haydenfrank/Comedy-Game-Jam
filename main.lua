@@ -27,7 +27,7 @@ function love.load()
 end
 
 function love.keypressed(key)
-	if key == "r" and lost == true then
+	if key == "r" and lost == true or won == true then
 		love.event.push("quit", "restart")
 	end
 
