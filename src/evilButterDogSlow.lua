@@ -60,9 +60,20 @@ function EvilDogs:update(dt)
         v.y = v.y + dirY * v.speed * dt
 
         --Checks if the EvilDog contacts the player
-        if(playerX == v.x and playerY == v.y) then
-            table.remove(EvilDogs.instances, i)
+        local playerBoundX = player.img:getWidth() * player.scale
+        local playerBoundY = player.img:getHeight() * player.scale
+        local enemyBoundX = EvilDogs.instances[i].image:getWidth() * EvilDogs.instances[i].scale
+        local enemyBoundY = EvilDogs.instances[i].image:getHeight() * EvilDogs.instances[i].scale
+
+        if(math.abs(playerX - v.x) < playerBoundX) then
+            if(math.abs(playerY - v.y) < playerBoundY) then
+               table.remove(EvilDogs.instances, i)
+            end
         end
+
+        -- if(playerX == v.x and playerY == v.y) then
+        --     table.remove(EvilDogs.instances, i)
+        -- end
     end
     
     --Spawns go up over time
@@ -90,7 +101,7 @@ end
 --Draws each of EvilDog
 function EvilDogs.draw()
     for _, v in ipairs(EvilDogs.instances) do
-        love.graphics.draw(v.image, v.x, v.y, 0, v.scale, v.scale)
+        love.graphics.draw(v.image, v.x, v.y, 0, v.scale, v.scale, v.image:getHeight() / 2, v.image:getHeight() / 2)
     end
 end
 
