@@ -127,9 +127,6 @@ function windows.mousepressed(mx, my, button)
 					pcall(v.video.stop, v.video)
 				end
 			end
-			if v.body and v.body.destroy then
-				pcall(v.body.destroy, v.body)
-			end
 			table.remove(windows.instances, i)
 			return
 		end
