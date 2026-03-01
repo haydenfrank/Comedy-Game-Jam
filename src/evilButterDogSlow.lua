@@ -43,7 +43,7 @@ function EvilDogs:update(dt)
     local playerX = player.body:getX()
     local playerY = player.body:getY()
 
-    for _, v in ipairs(EvilDogs.instances) do
+    for i, v in ipairs(EvilDogs.instances) do
         --Vector for movement position
         local dirX = playerX - v.x
         local dirY = playerY - v.y
@@ -58,6 +58,11 @@ function EvilDogs:update(dt)
         --Sets the new position for the current EvilDog
         v.x = v.x + dirX * v.speed * dt
         v.y = v.y + dirY * v.speed * dt
+
+        --Checks if the EvilDog contacts the player
+        if(playerX == v.x and playerY == v.y) then
+            table.remove(EvilDogs.instances, i)
+        end
     end
     
     --Spawns go up over time
