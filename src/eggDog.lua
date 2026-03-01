@@ -102,12 +102,12 @@ function eggDogs:update(dt)
 		end
 	end
 
-	--Spawns go up over time
 	local randomOne = 0
-	if 25 - timer.time > 0 then
-		randomOne = love.math.random(0, 25 - timer.time * 0.15)
+	if 5 - timer.time * 0.05 > 0 then
+		randomOne = love.math.random(0, 5 - timer.time * 0.05)
 	end
-	local randomTwo = love.math.random(0, 4)
+
+	local randomTwo = love.math.random(0, 15)
 	if randomOne == 0 and randomTwo == 0 then
 		spawn()
 	end
