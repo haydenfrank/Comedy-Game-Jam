@@ -85,7 +85,9 @@ function love.draw()
 		love.graphics.draw(LoadingScreen)
 		LoadingBar.draw()
 	elseif Timer:get() > C.LOADING_TIME then
-		Timer:reset()
+		if not loaded then
+			Timer:reset()
+		end
 		loaded = true
 	end
 	if lost then
