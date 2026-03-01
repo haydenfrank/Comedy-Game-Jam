@@ -46,7 +46,29 @@ end
 
 -- spawn timer
 local spawnTimer = 0
-local nextSpawn = math.random() * (C.SPAWN_MAX - C.SPAWN_MIN) + C.SPAWN_MIN
+-- Calculate spawn interval based on game progress so popups get
+-- more frequent as the game goes on.
+local function currentSpawnRange()
+    local elapsed = 0
+    if Timer and Timer.get then
+        elapsed = Timer:get()
+    end
+    local progress = 0
+    if C.GAME_TIME_LENGTH and C.GAME_TIME_LENGTH > 0 then
+        progress = math.min(math.max(elapsed / C.GAME_TIME_LENGTH, 0), 1)
+    end
+    -- Linearly interpolate the maximum spawn delay from SPAWN_MAX -> SPAWN_MIN
+    local curMax = C.SPAWN_MAX - progress * (C.SPAWN_MAX - C.SPAWN_MIN)
+    local curMin = C.SPAWN_MIN
+    return curMin, curMax
+end
+
+local function pickNextSpawn()
+    local minS, maxS = currentSpawnRange()
+    return math.random() * (math.max(maxS - minS, 0)) + minS
+end
+
+local nextSpawn = pickNextSpawn()
 
 function windows.update(dt)
 	for i = #windows.instances, 1, -1 do
@@ -65,7 +87,7 @@ function windows.update(dt)
 	if spawnTimer >= nextSpawn then
 		spawnPopup()
 		spawnTimer = 0
-		nextSpawn = math.random() * (C.SPAWN_MAX - C.SPAWN_MIN) + C.SPAWN_MIN
+		nextSpawn = pickNextSpawn()
 	end
 end
 
