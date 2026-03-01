@@ -60,6 +60,9 @@ local function currentSpawnRange()
     -- Linearly interpolate the maximum spawn delay from SPAWN_MAX -> SPAWN_MIN
     local curMax = C.SPAWN_MAX - progress * (C.SPAWN_MAX - C.SPAWN_MIN)
     local curMin = C.SPAWN_MIN
+    -- Apply global video spawn rate multiplier (higher => more frequent)
+    curMin = curMin / (C.VIDEO_SPAWN_RATE or 1.0)
+    curMax = curMax / (C.VIDEO_SPAWN_RATE or 1.0)
     return curMin, curMax
 end
 
