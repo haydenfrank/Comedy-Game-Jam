@@ -28,7 +28,8 @@ local bulletTypes = {
         speed = 325, -- a medium speed for bread
         w = breadImg:getWidth(),
         h = breadImg:getHeight(),
-        scale = 0.5,
+        -- make bread smaller when Xiao spawns it so it's less visually dominating
+        scale = 0.35,
     }
 }
 

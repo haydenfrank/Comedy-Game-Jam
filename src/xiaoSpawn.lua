@@ -49,7 +49,8 @@ function Xiao.update(dt)
                     if l > 0 then
                         dx, dy = dx / l, dy / l
                         -- cycle through kinds: bread, butter, egg
-                        local kinds = {"bread", "butter_slow", "egg"}
+                        -- Xiao should not fire butter; replace butter shots with bread
+                        local kinds = {"bread", "bread", "egg"}
                         local kind = kinds[math.floor(bossTimer*10) % #kinds + 1]
                         Bullets.spawn(xiaoX, xiaoY, dx, dy, false, kind)
                     end
@@ -76,7 +77,8 @@ function Xiao.update(dt)
                         local kx = math.cos(ang)
                         local ky = math.sin(ang)
                         -- alternating kinds in spread
-                        local kinds = {"egg", "bread", "butter_slow"}
+                        -- avoid butter for Xiao's spread; use bread instead
+                        local kinds = {"egg", "bread", "bread"}
                         local kind = kinds[(i % #kinds) + 1]
                         Bullets.spawn(xiaoX, xiaoY, kx, ky, false, kind)
                     end
