@@ -21,6 +21,7 @@ function love.load()
 	Health = require("src/health")
 	GameOver = love.graphics.newImage("assets/gameOver.png")
 	Warning = love.graphics.newImage("assets/warning.png")
+	Xiao = require("src/xiaoSpawn")
 end
 
 function love.keypressed(key)
@@ -66,6 +67,7 @@ function love.update(dt)
 			Videos.update(dt)
 			Health.update(dt)
 			ProgressBar.update(dt)
+			Xiao.update(dt)
 		end
 	end
 end
@@ -87,6 +89,8 @@ function love.draw()
 	ProgressBar.draw()
 	Videos.draw()
 	Health.draw()
+	Xiao.draw()
+
 
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
