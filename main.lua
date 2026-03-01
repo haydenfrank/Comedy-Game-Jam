@@ -40,9 +40,9 @@ function love.keypressed(key)
 			sound:play()
 		end
 	end
-	if key == "k" and loaded then -- for debug, skip to boss fight
-		Timer:set(C.GAME_TIME_BOSS_START)
-	end
+	-- if key == "k" and loaded then -- for debug, skip to boss fight
+	-- 	Timer:set(C.GAME_TIME_BOSS_START)
+	-- end
 end
 
 function love.mousepressed(x, y, button)
@@ -120,7 +120,6 @@ function love.draw()
 	Health.draw()
 
 	Videos.draw()
-	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
 		if Timer:get() < C.LOADING_TIME / 2 then
 			LoadingScreen = LoadingScreen1
