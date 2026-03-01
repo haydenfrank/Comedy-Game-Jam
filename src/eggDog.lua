@@ -3,6 +3,7 @@ local player = require("src/butterdog")
 local timer = require("src/timer")
 
 eggDogs = { instances = {} }
+local Bullets = require("src/bullets")
 
 --Spawns an enemy at a random spot.
 local function spawn()
@@ -30,6 +31,7 @@ local function spawn()
 		x = eggDog.x,
 		y = eggDog.y,
 		speed = C.EGG_SPEED,
+		shootCooldown = love.math.random() * 2.0,
 		scale = C.EVIL_CLOSE_SCALE,
 	}
 
@@ -48,7 +50,7 @@ function eggDogs:update(dt)
 		local dist = math.sqrt(dirX * dirX + dirY * dirY)
 
 		--desired distance to keep from player (in pixels)
-		local desiredDist = 450
+		local desiredDist = 250
 		local tolerance = 4 -- small band to avoid jitter
 
 		if dist > 0 then
@@ -64,6 +66,21 @@ function eggDogs:update(dt)
 				--too close: move away from player
 				v.x = v.x - nx * v.speed * dt
 				v.y = v.y - ny * v.speed * dt
+			end
+		end
+
+		-- shooting: decrement cooldown and fire at player when ready
+		v.shootCooldown = (v.shootCooldown or 0) - dt
+		local shootInterval = 5.0 -- seconds between shots (tweakable)
+		if v.shootCooldown <= 0 then
+			local sx = playerX - v.x
+			local sy = playerY - v.y
+			local sl = math.sqrt(sx * sx + sy * sy)
+			if sl > 0 then
+				sx = sx / sl
+				sy = sy / sl
+				Bullets.spawn(v.x, v.y, sx, sy, false)
+				v.shootCooldown = shootInterval
 			end
 		end
 
