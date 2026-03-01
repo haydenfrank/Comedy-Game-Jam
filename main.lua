@@ -91,7 +91,6 @@ function love.draw()
 	Health.draw()
 	Xiao.draw()
 
-
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
 		if Timer:get() < C.LOADING_TIME / 2 then
