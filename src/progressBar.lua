@@ -8,7 +8,7 @@ local width = 0
 local elapsed = 0
 local bossStart
 
-local iconX = 954
+local iconX = 875
 local iconY = 40
 local iconRot = 0
 local iconScale = 0.125
