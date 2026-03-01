@@ -77,41 +77,41 @@ function EvilDogs:update(dt)
 		end
 	end
 
-    -- spawn timer (scales over game progress similar to src/videos.lua)
-    local spawnTimer = EvilDogs._spawnTimer or 0
+	-- spawn timer (scales over game progress similar to src/videos.lua)
+	local spawnTimer = EvilDogs._spawnTimer or 0
 
-    local function currentSpawnRange()
-        local elapsed = 0
-        if timer and timer.get then
-            elapsed = timer:get()
-        end
-        local progress = 0
-        if C.GAME_TIME_LENGTH and C.GAME_TIME_LENGTH > 0 then
-            progress = math.min(math.max(elapsed / C.GAME_TIME_LENGTH, 0), 1)
-        end
-        local curMax = C.SPAWN_MAX - progress * (C.SPAWN_MAX - C.SPAWN_MIN)
-        local curMin = C.SPAWN_MIN
-        -- Apply global dog spawn rate multiplier (higher => more frequent)
-        curMin = curMin / (C.DOG_SPAWN_RATE or 1.0)
-        curMax = curMax / (C.DOG_SPAWN_RATE or 1.0)
-        return curMin, curMax
-    end
+	local function currentSpawnRange()
+		local elapsed = 0
+		if timer and timer.get then
+			elapsed = timer:get()
+		end
+		local progress = 0
+		if C.GAME_TIME_LENGTH and C.GAME_TIME_LENGTH > 0 then
+			progress = math.min(math.max(elapsed / C.GAME_TIME_LENGTH, 0), 1)
+		end
+		local curMax = C.SPAWN_MAX - progress * (C.SPAWN_MAX - C.SPAWN_MIN)
+		local curMin = C.SPAWN_MIN
+		-- Apply global dog spawn rate multiplier (higher => more frequent)
+		curMin = curMin / (C.DOG_SPAWN_RATE or 1.0)
+		curMax = curMax / (C.DOG_SPAWN_RATE or 1.0)
+		return curMin, curMax
+	end
 
-    local function pickNextSpawn()
-        local minS, maxS = currentSpawnRange()
-        return math.random() * (math.max(maxS - minS, 0)) + minS
-    end
+	local function pickNextSpawn()
+		local minS, maxS = currentSpawnRange()
+		return math.random() * (math.max(maxS - minS, 0)) + minS
+	end
 
-    EvilDogs._nextSpawn = EvilDogs._nextSpawn or pickNextSpawn()
+	EvilDogs._nextSpawn = EvilDogs._nextSpawn or pickNextSpawn()
 
-    spawnTimer = spawnTimer + dt
-    if spawnTimer >= EvilDogs._nextSpawn then
-        spawn()
-        spawnTimer = 0
-        EvilDogs._nextSpawn = pickNextSpawn()
-    end
+	spawnTimer = spawnTimer + dt
+	if spawnTimer >= EvilDogs._nextSpawn and timer:get() < C.GAME_TIME_BOSS_START then
+		spawn()
+		spawnTimer = 0
+		EvilDogs._nextSpawn = pickNextSpawn()
+	end
 
-    EvilDogs._spawnTimer = spawnTimer
+	EvilDogs._spawnTimer = spawnTimer
 end
 
 --Draws each of EvilDog
