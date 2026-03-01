@@ -31,7 +31,7 @@ local C = {
 	XIAO_SPREAD_COUNT = 15,
 	XIAO_SPREAD_ANGLE = math.rad(80), -- total spread in radians
 	DOG_SPAWN_RATE = 1.0,
-	VIDEO_SPAWN_RATE = 0.0,
+	VIDEO_SPAWN_RATE = 0.6,
 	-- LOADING_TIME = 0.05, -- for debug
 	-- UNKILLABLE = true, -- for debug
 }
