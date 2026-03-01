@@ -1,5 +1,6 @@
 local C = require("src/constants")
 local loaded = false
+local lost = false
 
 function love.load()
 	World = love.physics.newWorld(0, 0, true)
@@ -12,9 +13,22 @@ function love.load()
 	Videos = require("src/videos")
 	LoadingScreen = love.graphics.newImage("assets/loading.png")
 	LoadingBar = require("src/loadingbar")
+	Health = require("src/health")
+	GameOver = love.graphics.newImage("assets/gameOver.png")
 end
 
-function love.keypressed() end
+function love.keypressed(key)
+	if key == "k" then
+		if ButterDog.health == 1 then
+			lost = true
+		else
+			ButterDog.health = ButterDog.health - 1
+		end
+	end
+	if key == "r" and lost == true then
+		love.event.push("quit", "restart")
+	end
+end
 
 function love.mousepressed(x, y, button)
 	-- forward mouse clicks to the Videos module so popups can be closed
@@ -24,13 +38,16 @@ function love.mousepressed(x, y, button)
 end
 
 function love.update(dt)
-	World:update(dt)
-	Timer:update(dt)
-	LoadingBar.update(dt)
-	if loaded then
-		ButterDog:update(dt)
-		EvilDog:update(dt)
-		Videos.update(dt)
+	if not lost then
+		World:update(dt)
+		Timer:update(dt)
+		LoadingBar.update(dt)
+		if loaded then
+			ButterDog:update(dt)
+			EvilDog:update(dt)
+			Videos.update(dt)
+			Health.update(dt)
+		end
 	end
 end
 function love.draw()
@@ -47,6 +64,7 @@ function love.draw()
 	)
 	EvilDogs.draw()
 	Videos.draw()
+	Health.draw()
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
 		love.graphics.draw(LoadingScreen)
@@ -54,5 +72,8 @@ function love.draw()
 	elseif Timer:get() > C.LOADING_TIME then
 		Timer:reset()
 		loaded = true
+	end
+	if lost then
+		love.graphics.draw(GameOver)
 	end
 end
