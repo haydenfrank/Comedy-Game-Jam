@@ -1,5 +1,6 @@
 local C = require("src/constants")
 local loaded = false
+local won = false
 
 function love.load()
 	love.window.setTitle("ButtaDawg")
@@ -22,6 +23,7 @@ function love.load()
 	GameOver = love.graphics.newImage("assets/gameOver.png")
 	Warning = love.graphics.newImage("assets/warning.png")
 	Xiao = require("src/xiaoSpawn")
+	WinScreen = love.graphics.newImage("assets/game-win.png")
 end
 
 function love.keypressed(key)
@@ -63,7 +65,12 @@ local startFlashCount = false
 local startNoFlashCount = false
 
 function love.update(dt)
-	if not lost then
+
+	if(Timer.time >= C.GAME_TIME_LENGTH) then
+		won = true
+	end
+
+	if not lost and not won then
 		World:update(dt)
 		Timer:update(dt)
 		LoadingBar.update(dt)
@@ -73,10 +80,10 @@ function love.update(dt)
 			eggDogs:update(dt)
 			Bullets.update(dt, EvilDogs.instances)
 			Bullets.update(dt, eggDogs.instances)
+			Xiao.update(dt)
 			Videos.update(dt)
 			Health.update(dt)
 			ProgressBar.update(dt)
-			Xiao.update(dt)
 
 			--Count for flashing the INCOMING message
 			if startFlashCount == true then
@@ -151,5 +158,8 @@ function love.draw()
 	end
 	if lost then
 		love.graphics.draw(GameOver)
+	end
+	if won then
+		love.graphics.draw(WinScreen)
 	end
 end

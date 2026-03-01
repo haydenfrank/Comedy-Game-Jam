@@ -20,17 +20,17 @@ local laserTick = 0
 local nextSpreadAt = 0
 
 function Xiao.update(dt)
-	if C.GAME_TIME_BOSS_START <= timer.time then
-		bossActive = true
-		animationTime = animationTime + dt
-		if animationTime > 7 then
-			animationDone = true
-		end
-		if not animationDone then
-			xiaoX = xiaoX - dt * 60
-		end
-		if bossActive and animationDone then
-			bossTimer = bossTimer + dt
+    if(C.GAME_TIME_BOSS_START <= timer.time) then
+        bossActive = true
+        animationTime = animationTime + dt
+        if(animationTime > 5) then
+            animationDone = true
+        end
+        if(not animationDone) then
+            xiaoX = xiaoX - dt * 60
+        end
+        if bossActive and animationDone then
+            bossTimer = bossTimer + dt
 
 			-- laser attack (stream of images)
 			if bossTimer >= nextLaserAt then
