@@ -27,7 +27,7 @@ function love.load()
 end
 
 function love.keypressed(key)
-	if key == "r" and lost == true then
+	if key == "r" and lost == true or won == true then
 		love.event.push("quit", "restart")
 	end
 
@@ -65,8 +65,7 @@ local startFlashCount = false
 local startNoFlashCount = false
 
 function love.update(dt)
-
-	if(Timer.time >= C.GAME_TIME_LENGTH) then
+	if Timer.time >= C.GAME_TIME_LENGTH then
 		won = true
 	end
 
