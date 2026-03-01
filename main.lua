@@ -2,6 +2,7 @@ local C = require("src/constants")
 local loaded = false
 
 function love.load()
+	love.window.setTitle("ButtaDawg")
 	lost = false
 	World = love.physics.newWorld(0, 0, true)
 	BGImage = love.graphics.newImage("assets/background.png")
