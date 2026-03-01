@@ -53,6 +53,12 @@ function love.mousepressed(x, y, button)
 	-- end
 end
 
+local flashTime = 1
+local noFlashTime = 1
+local flashed = false
+local startFlashCount = false
+local startNoFlashCount = false
+
 function love.update(dt)
 	if not lost then
 		World:update(dt)
@@ -68,9 +74,20 @@ function love.update(dt)
 			Health.update(dt)
 			ProgressBar.update(dt)
 			Xiao.update(dt)
+
+			--Count for flashing the INCOMING message
+			if(startFlashCount == true) then
+				flashTime = flashTime - dt
+			end
+
+			if(startNoFlashCount == true) then
+				noFlashTime = noFlashTime - dt
+			end
+
 		end
 	end
 end
+
 function love.draw()
 	love.graphics.draw(BGImage)
 	love.graphics.draw(
@@ -106,8 +123,27 @@ function love.draw()
 		end
 		loaded = true
 	end
+
+	--If the game is at boss start, flash the INCOMING for 5 seconds
 	if Timer:get() > C.GAME_TIME_BOSS_START and Timer:get() <= C.GAME_TIME_BOSS_START + 5 and not lost then
-		love.graphics.draw(Warning)
+
+		if(not flashed) then
+			startFlashCount = true
+			if(flashTime < 0)then
+				flashTime = 2
+				flashed = true
+			end
+			love.graphics.draw(Warning)
+		end
+
+		if(flashed) then
+			startNoFlashCount = true
+			if(noFlashTime < 0) then
+				noFlashTime = 2
+				flashed = false
+			end
+		end
+		
 	end
 	if lost then
 		love.graphics.draw(GameOver)
