@@ -43,7 +43,7 @@ function Bullets.spawn(x, y, dirX, dirY, friendly)
 			scale = BS.scale,
 			angle = angle,
 			ttl = BS.ttl,
-			friendly = (friendly == nil) and true or friendly,
+			friendly = true,
 		}
 	else
 		b = {
@@ -56,7 +56,7 @@ function Bullets.spawn(x, y, dirX, dirY, friendly)
 			scale = ES.scale,
 			angle = angle,
 			ttl = ES.ttl,
-			friendly = (friendly == nil) and true or friendly,
+			friendly = false,
 		}
 	end
 	table.insert(Bullets.instances, b)
@@ -122,23 +122,31 @@ end
 function Bullets.draw()
 	love.graphics.push()
 	love.graphics.setColor(1, 1, 1)
-	for _, b in ipairs(Bullets.instances) do
-		if b.frendly then
-			bulletImg = bulletImg
-		else
-			bulletImg = eggBulletImg
-		end
-		love.graphics.draw(
-			bulletImg,
-			b.x,
-			b.y,
-			b.angle,
-			b.scale,
-			b.scale,
-			bulletImg:getWidth() / 2,
-			bulletImg:getHeight() / 2
-		)
-	end
+    for _, b in ipairs(Bullets.instances) do
+        if b.friendly then
+            love.graphics.draw(
+                bulletImg,
+                b.x,
+                b.y,
+                b.angle,
+                b.scale,
+                b.scale,
+                bulletImg:getWidth() / 2,
+                bulletImg:getHeight() / 2
+            )
+        else
+            love.graphics.draw(
+                eggBulletImg,
+                b.x,
+                b.y,
+                b.angle,
+                b.scale,
+                b.scale,
+                eggBulletImg:getWidth() / 2,
+                eggBulletImg:getHeight() / 2
+            )
+        end
+    end
 	love.graphics.pop()
 end
 
