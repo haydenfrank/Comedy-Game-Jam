@@ -62,8 +62,8 @@ function EvilDogs:update(dt)
     
     --Spawns go up over time
     local randomOne = 0
-    if(50 - timer.time > 0) then
-        randomOne = love.math.random(0, 50 - timer.time * .15)
+    if(25 - timer.time > 0) then
+        randomOne = love.math.random(0, 25 - timer.time * .15)
     end
     local randomTwo = love.math.random(0, 4)
     if(randomOne == 0 and randomTwo == 0) then
