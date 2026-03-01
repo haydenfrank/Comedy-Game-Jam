@@ -40,9 +40,9 @@ function love.keypressed(key)
 			sound:play()
 		end
 	end
-	-- if key == "k" and loaded then -- for debug, skip to boss fight
-	-- 	Timer:set(C.GAME_TIME_BOSS_START)
-	-- end
+	if key == "k" and loaded then -- for debug, skip to boss fight
+		Timer:set(C.GAME_TIME_BOSS_START)
+	end
 end
 
 function love.mousepressed(x, y, button)
