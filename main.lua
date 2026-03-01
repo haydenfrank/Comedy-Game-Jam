@@ -6,12 +6,13 @@ function love.load()
 	World = love.physics.newWorld(0, 0, true)
 	BGImage = love.graphics.newImage("assets/background.png")
 	ButterDog = require("src/butterdog")
+	Bullets = require("src/bullets")
 	ButterNova = require("src/butternova")
 	MapBorder = require("src/mapborder")
 	Timer = require("src/timer")
 	EvilDog = require("src/evilButterDogSlow")
 	Videos = require("src/videos")
-	LoadingScreen = love.graphics.newImage("assets/loading.png")
+	LoadingScreen = love.graphics.newImage("assets/loading1.png")
 	LoadingBar = require("src/loadingbar")
 	Health = require("src/health")
 	GameOver = love.graphics.newImage("assets/gameOver.png")
@@ -28,6 +29,13 @@ function love.keypressed(key)
 	if key == "r" and lost == true then
 		love.event.push("quit", "restart")
 	end
+
+	if key == "space" and loaded then
+		local mx, my = love.mouse.getPosition()
+		if ButterDog and ButterDog.shootAt then
+			ButterDog:shootAt(mx, my)
+		end
+	end
 end
 
 function love.mousepressed(x, y, button)
@@ -35,6 +43,12 @@ function love.mousepressed(x, y, button)
 	if Videos and Videos.mousepressed then
 		Videos.mousepressed(x, y, button)
 	end
+
+	-- if button == 1 and loaded then
+	-- 	if ButterDog and ButterDog.shootAt then
+	-- 		ButterDog:shootAt(x, y)
+	-- 	end
+	-- end
 end
 
 function love.update(dt)
@@ -45,6 +59,7 @@ function love.update(dt)
 		if loaded then
 			ButterDog:update(dt)
 			EvilDog:update(dt)
+			Bullets.update(dt, EvilDogs.instances)
 			Videos.update(dt)
 			Health.update(dt)
 		end
@@ -62,6 +77,7 @@ function love.draw()
 		ButterDog.img:getWidth() / 2,
 		ButterDog.img:getHeight() / 2
 	)
+	Bullets.draw()
 	EvilDogs.draw()
 	Videos.draw()
 	Health.draw()
