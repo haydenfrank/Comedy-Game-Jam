@@ -30,7 +30,7 @@ local function spawn()
 		image = eggDog.img,
 		x = eggDog.x,
 		y = eggDog.y,
-		speed = C.EGG_SPEED,
+		speed = C.EGG_DOG_SPEED,
 		shootCooldown = love.math.random() * 2.0,
 		scale = C.EVIL_CLOSE_SCALE,
 	}
