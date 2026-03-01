@@ -23,7 +23,7 @@ function Xiao.update(dt)
     if(C.GAME_TIME_BOSS_START <= timer.time) then
         bossActive = true
         animationTime = animationTime + dt
-        if(animationTime > 7) then
+        if(animationTime > 5) then
             animationDone = true
         end
         if(not animationDone) then
@@ -93,7 +93,7 @@ function Xiao.draw()
     if(C.GAME_TIME_BOSS_START <= timer.time) then
         love.graphics.draw(xiaoImage, xiaoX, xiaoY, 0, xiaoScale, xiaoScale)
     end
-    
+
 end
 
 return Xiao
