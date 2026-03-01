@@ -16,6 +16,7 @@ function love.load()
 	LoadingScreen1 = love.graphics.newImage("assets/loading1.png")
 	LoadingScreen2 = love.graphics.newImage("assets/loading2.png")
 	LoadingBar = require("src/loadingbar")
+	ProgressBar = require("src/progressBar")
 	Health = require("src/health")
 	GameOver = love.graphics.newImage("assets/gameOver.png")
 end
@@ -57,6 +58,7 @@ function love.update(dt)
 			Bullets.update(dt, EvilDogs.instances)
 			Videos.update(dt)
 			Health.update(dt)
+			ProgressBar.update(dt)
 		end
 	end
 end
@@ -76,6 +78,8 @@ function love.draw()
 	EvilDogs.draw()
 	Videos.draw()
 	Health.draw()
+	ProgressBar.draw()
+
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
 		if Timer:get() < C.LOADING_TIME / 2 then

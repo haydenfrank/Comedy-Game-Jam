@@ -19,6 +19,8 @@ local C = {
 	BULLET_W = 12,
 	BULLET_H = 6,
 	BULLET_TTL = 2.5,
+	GAME_TIME_LENGTH = 210,
+	GAME_TIME_BOSS_START = 160,
 	-- LOADING_TIME = 0.05, for debug
 }
 
