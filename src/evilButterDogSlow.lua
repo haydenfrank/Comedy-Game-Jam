@@ -77,16 +77,41 @@ function EvilDogs:update(dt)
 		end
 	end
 
-	--Spawns go up over time
-	local randomOne = 0
-	if 5 - timer.time * 0.05 > 0 then
-		randomOne = love.math.random(0, 5 - timer.time * 0.05)
-	end
+    -- spawn timer (scales over game progress similar to src/videos.lua)
+    local spawnTimer = EvilDogs._spawnTimer or 0
 
-	local randomTwo = love.math.random(0, 15)
-	if randomOne == 0 and randomTwo == 0 then
-		spawn()
-	end
+    local function currentSpawnRange()
+        local elapsed = 0
+        if timer and timer.get then
+            elapsed = timer:get()
+        end
+        local progress = 0
+        if C.GAME_TIME_LENGTH and C.GAME_TIME_LENGTH > 0 then
+            progress = math.min(math.max(elapsed / C.GAME_TIME_LENGTH, 0), 1)
+        end
+        local curMax = C.SPAWN_MAX - progress * (C.SPAWN_MAX - C.SPAWN_MIN)
+        local curMin = C.SPAWN_MIN
+        -- Apply global dog spawn rate multiplier (higher => more frequent)
+        curMin = curMin / (C.DOG_SPAWN_RATE or 1.0)
+        curMax = curMax / (C.DOG_SPAWN_RATE or 1.0)
+        return curMin, curMax
+    end
+
+    local function pickNextSpawn()
+        local minS, maxS = currentSpawnRange()
+        return math.random() * (math.max(maxS - minS, 0)) + minS
+    end
+
+    EvilDogs._nextSpawn = EvilDogs._nextSpawn or pickNextSpawn()
+
+    spawnTimer = spawnTimer + dt
+    if spawnTimer >= EvilDogs._nextSpawn then
+        spawn()
+        spawnTimer = 0
+        EvilDogs._nextSpawn = pickNextSpawn()
+    end
+
+    EvilDogs._spawnTimer = spawnTimer
 end
 
 --Draws each of EvilDog
