@@ -1,7 +1,4 @@
-local ok, C = pcall(require, "src/constants")
-if not ok then
-	C = {}
-end
+local C = require("src/constants")
 
 local Bullets = {}
 Bullets.instances = {}
@@ -9,20 +6,18 @@ Bullets.instances = {}
 local bulletImg = love.graphics.newImage("assets/buttlet.png")
 local eggBulletImg = love.graphics.newImage("assets/egg.png")
 
-local ES = {
+local eggBullet = {
 	speed = 150,
-	w = C.BULLET_W or eggBulletImg:getWidth(),
-	h = C.BULLET_H or eggBulletImg:getHeight(),
-	ttl = C.BULLET_TTL or 10,
-	scale = C.BULLET_SCALE or 0.25,
+	w = eggBulletImg:getWidth(),
+	h = eggBulletImg:getHeight(),
+	scale = C.EGG_BULLET_SCALE,
 }
 
-local BS = {
-	speed = C.BULLET_SPEED or 900,
-	w = C.BULLET_W or bulletImg:getWidth(),
-	h = C.BULLET_H or bulletImg:getHeight(),
-	ttl = C.BULLET_TTL or 5.5,
-	scale = C.BULLET_SCALE or 0.5,
+local butterBullet = {
+	speed = C.BUTTER_BULLET_SPEED,
+	w = bulletImg:getWidth(),
+	h = bulletImg:getHeight(),
+	scale = C.BUTTER_BULLET_SCALE,
 }
 
 local function aabbIntersect(ax, ay, aw, ah, bx, by, bw, bh)
@@ -36,26 +31,26 @@ function Bullets.spawn(x, y, dirX, dirY, friendly)
 		b = {
 			x = x,
 			y = y,
-			vx = dirX * BS.speed,
-			vy = dirY * BS.speed,
-			w = bulletImg:getWidth() * BS.scale,
-			h = bulletImg:getHeight() * BS.scale,
-			scale = BS.scale,
+			vx = dirX * butterBullet.speed,
+			vy = dirY * butterBullet.speed,
+			w = bulletImg:getWidth() * butterBullet.scale,
+			h = bulletImg:getHeight() * butterBullet.scale,
+			scale = butterBullet.scale,
 			angle = angle,
-			ttl = BS.ttl,
+			ttl = C.BULLET_TTL,
 			friendly = true,
 		}
 	else
 		b = {
 			x = x,
 			y = y,
-			vx = dirX * ES.speed,
-			vy = dirY * ES.speed,
-			w = ES.w * ES.scale,
-			h = ES.h * ES.scale,
-			scale = ES.scale,
+			vx = dirX * eggBullet.speed,
+			vy = dirY * eggBullet.speed,
+			w = eggBullet.w * eggBullet.scale,
+			h = eggBullet.h * eggBullet.scale,
+			scale = eggBullet.scale,
 			angle = angle,
-			ttl = ES.ttl,
+			ttl = C.BULLET_TTL,
 			friendly = false,
 		}
 	end
@@ -70,13 +65,7 @@ function Bullets.update(dt, enemies)
 		b.y = b.y + b.vy * dt
 		b.ttl = b.ttl - dt
 
-		if
-			b.ttl <= 0
-			or b.x < -200
-			or b.x > (C.WINDOW_WIDTH or 1600) + 200
-			or b.y < -200
-			or b.y > (C.WINDOW_HEIGHT or 900) + 200
-		then
+		if b.ttl <= 0 or b.x < -200 or b.x > C.WINDOW_WIDTH + 200 or b.y < -200 or b.y > C.WINDOW_HEIGHT + 200 then
 			table.remove(Bullets.instances, i)
 		else
 			if b.friendly then
@@ -122,31 +111,31 @@ end
 function Bullets.draw()
 	love.graphics.push()
 	love.graphics.setColor(1, 1, 1)
-    for _, b in ipairs(Bullets.instances) do
-        if b.friendly then
-            love.graphics.draw(
-                bulletImg,
-                b.x,
-                b.y,
-                b.angle,
-                b.scale,
-                b.scale,
-                bulletImg:getWidth() / 2,
-                bulletImg:getHeight() / 2
-            )
-        else
-            love.graphics.draw(
-                eggBulletImg,
-                b.x,
-                b.y,
-                b.angle,
-                b.scale,
-                b.scale,
-                eggBulletImg:getWidth() / 2,
-                eggBulletImg:getHeight() / 2
-            )
-        end
-    end
+	for _, b in ipairs(Bullets.instances) do
+		if b.friendly then
+			love.graphics.draw(
+				bulletImg,
+				b.x,
+				b.y,
+				b.angle,
+				b.scale,
+				b.scale,
+				bulletImg:getWidth() / 2,
+				bulletImg:getHeight() / 2
+			)
+		else
+			love.graphics.draw(
+				eggBulletImg,
+				b.x,
+				b.y,
+				b.angle,
+				b.scale,
+				b.scale,
+				eggBulletImg:getWidth() / 2,
+				eggBulletImg:getHeight() / 2
+			)
+		end
+	end
 	love.graphics.pop()
 end
 
