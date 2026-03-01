@@ -65,7 +65,8 @@ local startFlashCount = false
 local startNoFlashCount = false
 
 function love.update(dt)
-	if Timer.time >= C.GAME_TIME_LENGTH then
+
+	if(Timer.time >= C.GAME_TIME_LENGTH) then
 		won = true
 	end
 
