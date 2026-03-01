@@ -64,9 +64,6 @@ function love.update(dt)
 			Bullets.update(dt, EvilDogs.instances)
 			Bullets.update(dt, eggDogs.instances)
 			Videos.update(dt)
-			if C.UNKILLABLE then
-				ButterDog.health = 3
-			end
 			Health.update(dt)
 			ProgressBar.update(dt)
 		end

@@ -98,7 +98,9 @@ function Bullets.update(dt, enemies)
 						if ButterDog.health == 1 then
 							lost = true
 						else
-							ButterDog.health = ButterDog.health - 1
+							if not C.UNKILLABLE then
+								ButterDog.health = ButterDog.health - 1
+							end
 						end
 						table.remove(Bullets.instances, i)
 					end
