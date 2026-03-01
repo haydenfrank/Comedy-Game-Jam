@@ -1,5 +1,6 @@
 local C = require("src/constants")
 local player = require("src/butterdog")
+local timer = require("src/timer")
 
 EvilDogs = { instances = {} }
 
@@ -33,12 +34,11 @@ local function spawn()
         scale = C.EVIL_CLOSE_SCALE
     }
 
-
     table.insert(EvilDogs.instances, instance)
 
 end
 
-
+--Updates each of the EvilDog's positions
 function EvilDogs:update(dt)
     local playerX = player.body:getX()
     local playerY = player.body:getY()
@@ -59,12 +59,20 @@ function EvilDogs:update(dt)
         v.x = v.x + dirX * v.speed * dt
         v.y = v.y + dirY * v.speed * dt
     end
+    
+    --Spawns go up over time
+    local randomOne = 0
+    if(50 - timer.time > 0) then
+        randomOne = love.math.random(0, 50 - timer.time * .15)
+    end
+    local randomTwo = love.math.random(0, 4)
+    if(randomOne == 0 and randomTwo == 0) then
+        spawn()
+    end
 
-
-
-    spawn()
 end
 
+--Draws each of EvilDog
 function EvilDogs.draw()
     for _, v in ipairs(EvilDogs.instances) do
         love.graphics.draw(v.image, v.x, v.y, 0, v.scale, v.scale)
