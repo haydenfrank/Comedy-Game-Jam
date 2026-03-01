@@ -68,12 +68,9 @@ function EvilDogs:update(dt)
         if(math.abs(playerX - v.x) < playerBoundX) then
             if(math.abs(playerY - v.y) < playerBoundY) then
                table.remove(EvilDogs.instances, i)
+               player.health = player.health - 1
             end
         end
-
-        -- if(playerX == v.x and playerY == v.y) then
-        --     table.remove(EvilDogs.instances, i)
-        -- end
     end
     
     --Spawns go up over time
