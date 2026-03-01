@@ -14,6 +14,7 @@ local C = {
 	POPUP_TTL_MIN = 6.0,
 	POPUP_TTL_MAX = 12.0,
 	MAX_POPUPS = 8,
+	LOADING_TIME = 13.024,
 }
 
 return C
