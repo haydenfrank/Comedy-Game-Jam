@@ -30,6 +30,9 @@ function love.keypressed(key)
 		local mx, my = love.mouse.getPosition()
 		if ButterDog and ButterDog.shootAt then
 			ButterDog:shootAt(mx, my)
+			sound = love.audio.newSource("assets/shoot.ogg", "static")
+			sound:setVolume(0.45)
+			sound:play()
 		end
 	end
 end
