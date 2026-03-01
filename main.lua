@@ -83,9 +83,9 @@ function love.draw()
 	Bullets.draw()
 	EvilDogs.draw()
 	eggDogs.draw()
+	ProgressBar.draw()
 	Videos.draw()
 	Health.draw()
-	ProgressBar.draw()
 
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
