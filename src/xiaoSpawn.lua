@@ -49,7 +49,7 @@ function Xiao.update(dt)
 				if laserTick >= C.XIAO_LASER_RATE then
 					-- spawn a fast stream towards player using random image types
 					local px, py = ButterDog.body:getX(), ButterDog.body:getY()
-					local dx, dy = px - xiaoX, py - xiaoY
+					local dx, dy = px - xiaoX - 150, py - xiaoY - 200
 					local l = math.sqrt(dx * dx + dy * dy)
 					if l > 0 then
 						dx, dy = dx / l, dy / l
