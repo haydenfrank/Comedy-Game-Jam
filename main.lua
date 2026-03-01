@@ -67,7 +67,11 @@ function love.draw()
 	Health.draw()
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
-		love.graphics.draw(LoadingScreen)
+		if Timer:get() < C.LOADING_TIME / 2 then
+			love.graphics.draw(LoadingScreen1)
+		else
+			love.graphics.draw(LoadingScreen2)
+		end
 		LoadingBar.draw()
 	elseif Timer:get() > C.LOADING_TIME then
 		Timer:reset()
