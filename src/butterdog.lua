@@ -1,4 +1,5 @@
 local C = require("src/constants")
+local Bullets = require("src/bullets")
 
 ButterDog = {}
 ButterDog.health = 3
@@ -37,6 +38,16 @@ function ButterDog:update(dt)
 		vy = vy / len * self.speed
 		self.body:setLinearVelocity(vx, vy)
 	end
+end
+
+function ButterDog:shootAt(mx, my)
+  local px, py = self.body:getX(), self.body:getY()
+  local dx, dy = mx - px, my - py
+  local len = math.sqrt(dx * dx + dy * dy)
+  if len == 0 then return end
+  dx = dx / len
+  dy = dy / len
+  Bullets.spawn(px, py, dx, dy)
 end
 
 return ButterDog
