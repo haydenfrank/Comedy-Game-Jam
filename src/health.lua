@@ -13,7 +13,7 @@ function Health.update(dt)
 end
 
 function Health.draw()
-	love.graphics.draw(healthImages[health], 10, 10)
+	love.graphics.draw(healthImages[health])
 end
 
 return Health
