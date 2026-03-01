@@ -17,6 +17,7 @@ function love.load()
 	LoadingScreen1 = love.graphics.newImage("assets/loading1.png")
 	LoadingScreen2 = love.graphics.newImage("assets/loading2.png")
 	LoadingBar = require("src/loadingbar")
+	ProgressBar = require("src/progressBar")
 	Health = require("src/health")
 	GameOver = love.graphics.newImage("assets/gameOver.png")
 end
@@ -30,6 +31,9 @@ function love.keypressed(key)
 		local mx, my = love.mouse.getPosition()
 		if ButterDog and ButterDog.shootAt then
 			ButterDog:shootAt(mx, my)
+			sound = love.audio.newSource("assets/shoot.ogg", "static")
+			sound:setVolume(0.45)
+			sound:play()
 		end
 	end
 end
@@ -60,6 +64,7 @@ function love.update(dt)
 			Bullets.update(dt, eggDogs.instances)
 			Videos.update(dt)
 			Health.update(dt)
+			ProgressBar.update(dt)
 		end
 	end
 end
@@ -80,6 +85,8 @@ function love.draw()
 	eggDogs.draw()
 	Videos.draw()
 	Health.draw()
+	ProgressBar.draw()
+
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
 		if Timer:get() < C.LOADING_TIME / 2 then
