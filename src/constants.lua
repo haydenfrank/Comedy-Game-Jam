@@ -23,10 +23,17 @@ local C = {
 	LOADING_TIME = 13.24,
 	GAME_TIME_LENGTH = 222,
 	GAME_TIME_BOSS_START = 150.720,
+	-- boss attack tuning
+	XIAO_LASER_COOLDOWN = 3.0,
+	XIAO_LASER_DURATION = 1.5,
+	XIAO_LASER_RATE = 0.06, -- seconds between laser shots
+	XIAO_SPREAD_COOLDOWN = 2.5,
+	XIAO_SPREAD_COUNT = 5,
+	XIAO_SPREAD_ANGLE = math.rad(40), -- total spread in radians
 	DOG_SPAWN_RATE = 1.0,
-	VIDEO_SPAWN_RATE = 1.0,
+	VIDEO_SPAWN_RATE = 0.0,
 	-- LOADING_TIME = 0.05, -- for debug
-	-- UNKILLABLE = true, -- for debug
+	UNKILLABLE = true, -- for debug
 }
 
 return C

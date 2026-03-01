@@ -38,6 +38,9 @@ function love.keypressed(key)
 			sound:play()
 		end
 	end
+	if key == "k" and loaded then
+		Timer:set(C.GAME_TIME_BOSS_START)
+	end
 end
 
 function love.mousepressed(x, y, button)
