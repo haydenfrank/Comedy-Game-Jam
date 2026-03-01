@@ -96,7 +96,9 @@ function eggDogs:update(dt)
 				if player.health == 1 then
 					lost = true
 				else
-					player.health = player.health - 1
+					if not C.UNKILLABLE then
+						player.health = player.health - 1
+					end
 				end
 			end
 		end

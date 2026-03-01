@@ -69,20 +69,22 @@ function EvilDogs:update(dt)
 				if player.health == 1 then
 					lost = true
 				else
-					player.health = player.health - 1
+					if not C.UNKILLABLE then
+						player.health = player.health - 1
+					end
 				end
 			end
 		end
 	end
 
 	--Spawns go up over time
-    local randomOne = 0
-    if(5 - timer.time * .05 > 0) then
-        randomOne = love.math.random(0, 5 - timer.time * .05)
-    end
+	local randomOne = 0
+	if 5 - timer.time * 0.05 > 0 then
+		randomOne = love.math.random(0, 5 - timer.time * 0.05)
+	end
 
 	local randomTwo = love.math.random(0, 15)
-	if (randomOne == 0 and randomTwo == 0) then
+	if randomOne == 0 and randomTwo == 0 then
 		spawn()
 	end
 end
@@ -95,4 +97,3 @@ function EvilDogs.draw()
 end
 
 return EvilDogs
-
