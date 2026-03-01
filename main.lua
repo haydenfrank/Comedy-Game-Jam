@@ -20,6 +20,7 @@ function love.load()
 	ProgressBar = require("src/progressBar")
 	Health = require("src/health")
 	GameOver = love.graphics.newImage("assets/gameOver.png")
+	Warning = love.graphics.newImage("assets/warning.png")
 end
 
 function love.keypressed(key)
@@ -63,6 +64,9 @@ function love.update(dt)
 			Bullets.update(dt, EvilDogs.instances)
 			Bullets.update(dt, eggDogs.instances)
 			Videos.update(dt)
+			if C.UNKILLABLE then
+				ButterDog.health = 3
+			end
 			Health.update(dt)
 			ProgressBar.update(dt)
 		end
@@ -101,6 +105,9 @@ function love.draw()
 			Timer:reset()
 		end
 		loaded = true
+	end
+	if Timer:get() > C.GAME_TIME_BOSS_START and Timer:get() <= C.GAME_TIME_BOSS_START + 5 and not lost then
+		love.graphics.draw(Warning)
 	end
 	if lost then
 		love.graphics.draw(GameOver)
