@@ -9,6 +9,11 @@ local xiaoX = C.WINDOW_WIDTH
 local xiaoY = C.WINDOW_HEIGHT / 3
 local xiaoScale = 2
 local Bullets = require("src/bullets")
+local concrete = love.audio.newSource("assets/concrete.ogg", "static")
+local siren = love.audio.newSource("assets/siren.ogg", "static")
+concrete:setVolume(0.5)
+siren:setVolume(0.5)
+local played = 0
 
 -- boss state
 local bossActive = false
@@ -91,6 +96,11 @@ end
 function Xiao.draw()
 	if C.GAME_TIME_BOSS_START <= timer.time then
 		love.graphics.draw(xiaoImage, xiaoX, xiaoY, 0, xiaoScale, xiaoScale)
+		if played == 0 then
+			concrete:play()
+			siren:play()
+			played = played + 1
+		end
 	end
 end
 
