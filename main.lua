@@ -44,11 +44,11 @@ function love.mousepressed(x, y, button)
 		Videos.mousepressed(x, y, button)
 	end
 
-	if button == 1 and loaded then
-		if ButterDog and ButterDog.shootAt then
-			ButterDog:shootAt(x, y)
-		end
-	end
+	-- if button == 1 and loaded then
+	-- 	if ButterDog and ButterDog.shootAt then
+	-- 		ButterDog:shootAt(x, y)
+	-- 	end
+	-- end
 end
 
 function love.update(dt)
