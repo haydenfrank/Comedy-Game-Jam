@@ -1,7 +1,6 @@
 local C = require("src/constants")
 local loaded = false
 
-
 function love.load()
 	lost = false
 	World = love.physics.newWorld(0, 0, true)
@@ -13,7 +12,8 @@ function love.load()
 	Timer = require("src/timer")
 	EvilDog = require("src/evilButterDogSlow")
 	Videos = require("src/videos")
-	LoadingScreen = love.graphics.newImage("assets/loading1.png")
+	LoadingScreen1 = love.graphics.newImage("assets/loading1.png")
+	LoadingScreen2 = love.graphics.newImage("assets/loading2.png")
 	LoadingBar = require("src/loadingbar")
 	Health = require("src/health")
 	GameOver = love.graphics.newImage("assets/gameOver.png")
@@ -77,6 +77,11 @@ function love.draw()
 	Health.draw()
 	love.graphics.print("Time: " .. math.floor(Timer:get()) .. "s", 10, 10)
 	if Timer:get() < C.LOADING_TIME and not loaded then
+		if Timer:get() < C.LOADING_TIME / 2 then
+			LoadingScreen = LoadingScreen1
+		else
+			LoadingScreen = LoadingScreen2
+		end
 		love.graphics.draw(LoadingScreen)
 		LoadingBar.draw()
 	elseif Timer:get() > C.LOADING_TIME then
